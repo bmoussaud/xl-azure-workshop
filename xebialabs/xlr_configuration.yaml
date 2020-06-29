@@ -1,0 +1,12 @@
+---
+apiVersion: xl-release/v1
+kind: Templates
+spec:
+- directory: MyApp
+  children:
+  - name: local xldeploy
+    type: xldeploy.XLDeployServer
+    url: http://localhost:4516
+    authenticationMethod: Basic
+    username: admin
+    password: !value "xldeploy_XLDeployServer_local_xldeploy_password"

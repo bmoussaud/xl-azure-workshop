@@ -1,0 +1,24 @@
+blueprint:
+  current-repository: xl-github
+  repositories:
+  - name: XL Blueprints
+    type: http
+    url: https://dist.xebialabs.com/public/blueprints/${CLIVersion}/
+  - name: xl-github
+    owner: xebialabs
+    repo-name: blueprints
+    type: github
+blueprint-repository:
+  password: ""
+  url: https://dist.xebialabs.com/public/blueprints
+  username: ""
+xl-deploy:
+  authmethod: http
+  password: admin
+  url: http://localhost:4543
+  username: admin
+xl-release:
+  authmethod: http
+  password: admin
+  url: http://localhost:5516/
+  username: admin

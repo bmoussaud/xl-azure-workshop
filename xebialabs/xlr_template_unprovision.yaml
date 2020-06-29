@@ -1,0 +1,27 @@
+---
+apiVersion: xl-release/v1
+kind: Templates
+spec:
+- directory: MyApp
+  children:
+  - template: Unprovision the stack
+    scheduledStartDate: 2020-06-16T09:00:00Z
+    phases:
+    - phase: Unstack
+      tasks:
+      - name: Undeploy the application
+        type: xldeploy.Undeploy
+        server: local xldeploy
+        deployedApplication: Environments/tst/PetClinic-war
+        owner: admin
+      - name: Undeploy the tomcat server
+        type: xldeploy.Undeploy
+        server: local xldeploy
+        deployedApplication: Environments/tst/java-server-application
+        owner: admin
+      - name: Unprovision the host.
+        type: xldeploy.Undeploy
+        server: local xldeploy
+        deployedApplication: Environments/tst/aws-host
+        owner: admin
+    riskProfile: Default risk profile

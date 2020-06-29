@@ -1,0 +1,56 @@
+---
+apiVersion: xl-release/v1
+kind: Templates
+spec:
+- directory: MyApp
+  children:
+  - template: Provision and Deploy
+    scheduledStartDate: 2020-06-16T09:00:00Z
+    phases:
+    - phase: Phase 1
+      tasks:
+      - name: Spin  up  a new Host.
+        type: xldeploy.Deploy
+        server: local xldeploy
+        deploymentApplication: Applications/aws-host
+        deploymentVersion: 1.0.0
+        deploymentPackage: Applications/aws-host/1.0.0
+        deploymentEnvironment: Environments/tst
+        owner: admin
+      - name: check in the AWS console the new EC2 instance is up & ready
+        type: xlrelease.Task
+        description: Go to the AWS console, provide your credential and click on the
+          EC2 Service
+        owner: admin
+      color: '#0079BC'
+    - phase: Phase 2
+      tasks:
+      - name: Install tomcat app server.
+        type: xldeploy.Deploy
+        server: local xldeploy
+        deploymentApplication: Applications/java-server-application
+        deploymentVersion: 0.1.1
+        deploymentPackage: Applications/java-server-application/0.1.1
+        deploymentEnvironment: Environments/tst
+        owner: admin
+      - name: Connect to the tomcat console
+        type: xlrelease.Task
+        description: using your browser, connect to http://ip_of_machine:8080
+        owner: admin
+      color: '#0079BC'
+    - phase: Phase 3
+      tasks:
+      - name: Deploy the application
+        type: xldeploy.Deploy
+        server: local xldeploy
+        deploymentApplication: Applications/PetClinic-war
+        deploymentVersion: "1.0"
+        deploymentPackage: Applications/PetClinic-war/1.0
+        deploymentEnvironment: Environments/tst
+        owner: admin
+      - name: Connect to the petclinic app
+        type: xlrelease.Task
+        description: using your browser, connect to http://ip_of_machine:8080/petclinic
+        owner: admin
+      color: '#0079BC'
+    riskProfile: Default risk profile
