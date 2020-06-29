@@ -35,12 +35,7 @@ spec:
         type: aws.vpc.SecurityGroupInboundRuleSpec
         protocol: TCP
         portRange: "22"
-        source: 0.0.0.0/0
-    - name: ansible-controller-kp
-      type: aws.ec2.KeyPairSpec
-      keyPairName: myansible-keypair
-      region: eu-west-3
-      pemFilePath: ssh-keypairs/myansible-keypair.pem
+        source: 0.0.0.0/0    
     templates:
     - name: ansible-host-template
       type: template.overthere.SshHost

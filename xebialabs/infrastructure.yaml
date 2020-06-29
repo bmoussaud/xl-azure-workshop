@@ -2,11 +2,10 @@
 apiVersion: xl-deploy/v1
 kind: Infrastructure
 spec:
-- name: Infrastructure/aws cloud connection
-  type: aws.Cloud
-  accesskey: aaaaaaa
-  accessSecret: bbbbbb
-  children:
-  - name: eu-west-3
-    type: aws.cloudformation.Stack
-    region: eu-west-3
+- name: Infrastructure/azure cloud connection
+  type: azure.Cloud
+  authMethod: directory-application-and-service-principal
+  subscriptionId: xxxxxx-a628-43e2-a3xxxxda-1f9ea1b3ece3
+  tenantId: xxxxx-5162-48ba-ab57-a02xxxxx35a2385e0
+  clientId: xxxxx-820a-40d4b-a4xxxx08-4cf7c0xxxxa99796
+  clientKey: dddddddddddd

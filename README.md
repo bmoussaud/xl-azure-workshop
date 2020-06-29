@@ -16,6 +16,29 @@ The workshop will setup the following stack:
 
 ![image](images/schema-1.png)
 
+### Provision a new resource group
+
+* apply the Devops-as-code defintions containing the environment and infrastructure definition
+
+```bash
+xlw apply -f xebialabs/infrastructure.yaml
+xlw apply -f xebialabs/environment.yaml
+```
+
+* edit the `Infrastructure/azure cloud connection` authMethod,subscriptionId,tenantId,clientId and clientKey properties with your Azure subscription settings. If you're using azure-cli you can find them in `~/.azure` folder.
+
+* trigger the `check Connection` control task to validate the settings.
+
+* apply the Devops-as-code defintions containing the deployment package for the resource group provisioning
+
+```bash
+xlw apply -f xebialabs/resource_group_provisioner.yaml
+```
+
+* deploy `Applications/ResourceGroupProvisioner/0.0.1` package in an environment containing an azure.Cloud Configuration item with your Azure credentials (`Environments/test/azure test`)
+
+* Once deployed, in the Infrastructure, a new configuration item `Infrastructure/azure cloud connection/myResourceGroup`representing the resource groupe has been created under the azure.Cloud Configuration Item representing the new resource group.
+
 ### Provision the ansible controlleur in Azure
 
 * apply the Devops-as-code defintions containing the deployment package for ansible controller
@@ -33,15 +56,15 @@ xlw apply -f xebialabs/infrastructure.yaml
 xlw apply -f xebialabs/environment.yaml
 ```
 
-* edit the `Infrastructure/aws cloud connection` accesskey and accessSecret properties with your AWS account settings. If you're using aws-cli you can find them in `~/.aws/credentials` file.
+* edit the `Infrastructure/azure cloud connection` authMethod,subscriptionId,tenantId,clientId and clientKey properties with your Azure subscription settings. If you're using azure-cli you can find them in `~/.azure` folder.
 
-* trigger the `check Connection` control task to validate the setting using `eu-west-3` as region parameter.
+* trigger the `check Connection` control task to validate the settings.
 
 ![image](images/schema-9.png)
 
 * deploy `Applications/ansible-controller/1.0.0` package in an environment containing an aws.Cloud Configuration item with your AWS credentials (`Environments/test/aws test`)
 
-* Once deployed, in the Infrastructure,a new configuration item representing the Ansible controler has been created and added to the environment. It follows the following pattern 'Infrastructure/ansible-controlleur-{{%instanceId%}}-host'.
+* Once deployed, in the Infrastructure,a new configuration item representing the resource has been created and added to the environment. It follows the following pattern 'Infrastructure/ansible-controlleur-{{%instanceId%}}-host'.
 * trigger the `check Connection` control task 
 
 ### Provision a new target host in AWS

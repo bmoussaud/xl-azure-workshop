@@ -1,0 +1,18 @@
+---
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: Applications/ResourceGroupProvisioner
+  type: udm.Application
+  lastVersion: 0.0.1
+  children:
+  - name: 0.0.1
+    type: udm.DeploymentPackage
+    deployables:
+    - name: myResourceGroup
+      type: azure.ResourceGroupSpec
+      location: '{{location}}'
+      resourceGroupName: xl-azure-workshop-{{env}}
+      resourceGroupTags:
+        demo: digital.ai
+        env: '{{env}}'

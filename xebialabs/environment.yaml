@@ -4,14 +4,14 @@ kind: Environments
 spec:
 - directory: Environments/test
   children:
-  - name: aws test
+  - name: azure test
     type: udm.Environment
     members:
-    - Infrastructure/aws cloud connection
-    - Infrastructure/aws cloud connection/eu-west-3
+    - Infrastructure/azure cloud connection
     dictionaries:
-    - Environments/test/aws test configuration
-  - name: aws test configuration
+    - Environments/test/azure test configuration
+  - name: azure test configuration
     type: udm.Dictionary
     entries:
+      location: France Central
       env: test
