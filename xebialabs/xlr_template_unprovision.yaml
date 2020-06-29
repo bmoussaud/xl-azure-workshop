@@ -22,6 +22,6 @@ spec:
       - name: Unprovision the host.
         type: xldeploy.Undeploy
         server: local xldeploy
-        deployedApplication: Environments/tst/aws-host
+        deployedApplication: Environments/tst/azure-vm
         owner: admin
     riskProfile: Default risk profile

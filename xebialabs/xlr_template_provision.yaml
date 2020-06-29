@@ -12,14 +12,14 @@ spec:
       - name: Spin  up  a new Host.
         type: xldeploy.Deploy
         server: local xldeploy
-        deploymentApplication: Applications/aws-host
+        deploymentApplication: Applications/azure-vm
         deploymentVersion: 1.0.0
-        deploymentPackage: Applications/aws-host/1.0.0
+        deploymentPackage: Applications/azure-vm/1.0.0
         deploymentEnvironment: Environments/tst
         owner: admin
-      - name: check in the AWS console the new EC2 instance is up & ready
+      - name: check in the Azure console the new VM is up & ready
         type: xlrelease.Task
-        description: Go to the AWS console, provide your credential and click on the
+        description: Go to the Azure console, provide your credential and click on the
           EC2 Service
         owner: admin
       color: '#0079BC'

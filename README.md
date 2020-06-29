@@ -49,37 +49,25 @@ xlw apply -f xebialabs/aws_ansible_controller.yaml
 
 * edit CI Applications/ansible-controller/1.0.0/ansible-host-template/ansible-controler-template, to modify devops properties to match your current environment (devopsAsCodeUrl & xlPath)
 
-* apply the Devops-as-code defintions containing the environment and infrastructure definition
-
-```bash
-xlw apply -f xebialabs/infrastructure.yaml
-xlw apply -f xebialabs/environment.yaml
-```
-
-* edit the `Infrastructure/azure cloud connection` authMethod,subscriptionId,tenantId,clientId and clientKey properties with your Azure subscription settings. If you're using azure-cli you can find them in `~/.azure` folder.
-
-* trigger the `check Connection` control task to validate the settings.
-
-![image](images/schema-9.png)
-
 * deploy `Applications/ansible-controller/1.0.0` package in an environment containing an aws.Cloud Configuration item with your AWS credentials (`Environments/test/aws test`)
 
 * Once deployed, in the Infrastructure,a new configuration item representing the resource has been created and added to the environment. It follows the following pattern 'Infrastructure/ansible-controlleur-{{%instanceId%}}-host'.
-* trigger the `check Connection` control task 
 
-### Provision a new target host in AWS
+* trigger the `check Connection` control task.
+
+### Provision a new target host in Azure
 
 * apply the Devops-as-code defintions containing the deployment package containing the aws-host package.
 
 ```bash
-xlw apply -f xebialabs/aws_host.yaml
+xlw apply -f xebialabs/azure_vm.yaml
 ```
 
-* deploy `Applications/aws-host/1.0.0` package in an environmnet containing an aws.Cloud Configuration item with your AWS credentials.
-* Once deployed, in the Infrastructure, a new Configuration representing the new EC2 instance has been created and added to the environment. it follows the following pattern 'Infrastructure/{{%instanceId%}}-host'.
+* deploy `Applications/azure-vm/1.0.0` package in an environmnet containing an azure.Cloud Configuration item with your Azure credentials.
+* Once deployed, in the Infrastructure, a new Configuration representing the new VM instance has been created and added to the environment. it follows the following pattern 'Infrastructure/{{%instanceId%}}-host'.
 * trigger the `check Connection` control task to validate it.
 
-Note: the `Applications/aws-host/1.0.1` performs the same deployment but using a cloudformation template instead. The new created host will be put into a dedicated environment.
+Note: the `Applications/azure-vm/1.0.1` performs the same deployment but using a ARM template instead. The new created host will be put into a dedicated environment.
 
 ```bash
 xlw apply -f xebialabs/application_tomcat.yaml
@@ -142,8 +130,8 @@ in XLRelease, we'll design a template to orchestrate the tasks to provision and 
 
 ![image](images/schema-2.png)
 
-* Add Task, Select Core:Manual, and provide a title, for example `check in the AWS console the new EC2 instance is up & ready`
-  * Description: Go to the AWS console, provide your credential and click on the EC2 Service.
+* Add Task, Select Core:Manual, and provide a title, for example `check in the Azure console the new VM instance is up & ready`
+  * Description: Go to the Azure console, provide your credential and click on the Compute Service.
   * Click on `Assign to me` link
 
 ![image](images/schema-3.png)
@@ -197,12 +185,12 @@ Tips: use the `xldeploy:undeploy` task.
 
 ### Save your work as code
 
-```
+```bash
 C:\xl-aws-workshop>xlw  --config config.yaml generate xl-release -t -o -p MyApp -f xebialabs/xlr_template_provision.yaml -n "Provision and Deploy"
 Generating definitions for path MyApp from XL Release to xebialabs/xlr_template_provision.yaml
 ```
 
-```
+```bash
 C:\xl-aws-workshop>xlw  --config config.yaml generate xl-release -t -o -p MyApp -f xebialabs/xlr_template_unprovision.yaml -n "Unprovision the stack"
 Generating definitions for path MyApp from XL Release to xebialabs/xlr_template_unprovision.yaml
 ```

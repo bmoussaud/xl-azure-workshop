@@ -1,0 +1,113 @@
+---
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: Applications/azure-vm
+  type: udm.Application
+  lastVersion: 1.0.0
+  children:
+  - name: 1.0.0
+    type: udm.ProvisioningPackage
+    deployables:
+    - name: azure-vm-NIC
+      type: azure.NetworkInterfaceSpec
+      location: '{{location}}'
+      networkInterfaceTags:
+        demo: digital.ai
+        env: '{{env}}'
+      networkSecurityGroupName: azure-vm-NSG
+      ipConfigurations:
+      - name: azure-vm-ip
+        type: azure.NetworkInterfaceIPConfigurationSpec
+        virtualNetworkName: azure-vm-VNET
+        subnet: ansible-subnet
+        publicIpAddress: azure-vm-publicIP
+    - name: azure-vm-VNET
+      type: azure.VirtualNetworkSpec
+      location: '{{location}}'
+      virtualNetworkTags:
+        demo: digital.ai
+        env: '{{env}}'
+      addressPrefixes:
+      - 10.0.0.0/16
+      subnets:
+      - name: ansible-subnet
+        type: azure.SubnetSpec
+        subnetTags:
+          demo: digital.ai
+          env: '{{env}}'
+        addressPrefix: 10.0.0.0/24
+        networkSecurityGroupName: azure-vm-NSG
+    - name: azure-vm-publicIP
+      type: azure.PublicIpAddressSpec
+      location: '{{location}}'
+      publicIpAddressTags:
+        env: '{{env}}'
+    - name: azure-host
+      type: azure.VirtualMachineSpec
+      boundTemplates:
+      - Applications/azure-vm/1.0.0/azure-host-template
+      virtualMachineTags:
+        demo: digital.ai
+        env: '{{env}}'
+      location: '{{location}}'
+      sku: 18.04-LTS
+      version: latest
+      osDiskName: osdisk
+      osStorageAccountName: azurevmsa
+      caching: ReadWrite
+      computerName: ansible-host-vm
+      adminUserName: AzureUser
+      adminPassword: connectedWithAzure3579
+      enableLinuxConfiguration: "True"
+      disablePasswordAuthentication: "False"
+      publicKeys:
+        /home/AzureUser/.ssh/authorized_keys: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVwrBFb6qlKoj64PRfTwM6dNxugS8lvbriWBmp3Xo/F7e4JaJyOqErurvQ/cviiWiwexoLE1SxnyaCWin5uBkcNMcpjRtIUaSeKVht5kVqFvxe7uXjqcggUYbWFGhh91fGqlddjYmGpN6Tue8OLmhbiq6tF8SRncUExT+Gpj4Bn5Pe7XhHEuN0MFiN4bK+bEBKQkzKE7jgbEWmmc5/pwrsEEsuwaxUl6yoWbIq3mZoy9u5mUK2HFFQ9Nus9mJEiDVYtATO7aL6/gOeBzhkBO+x9UPV8B9lLjdSoWwmCkxFNfQuTlWoPERG1rqrX++gocpB8dJb1SKaZvUf65rRmOZ1
+          AzureUser@ansible-host
+      networkInterfaces:
+      - azure-vm-NIC
+    - name: azurevmsa
+      type: azure.StorageAccountSpec
+      location: '{{location}}'
+      storageAccountTags:
+        demo: digital.ai
+        env: '{{env}}'
+    - name: azure-vm-NSG
+      type: azure.NetworkSecurityGroupSpec
+      location: '{{location}}'
+      networkSecurityGroupTags:
+        demo: digital.ai
+        env: '{{env}}'
+      securityRules:
+      - name: web_rule
+        type: azure.SecurityRuleSpec
+        protocol: Tcp
+        sourcePortRange: '*'
+        destinationPortRange: "8080"
+        sourceAddressPrefix: '*'
+        destinationAddressPrefix: '*'
+        access: Allow
+        priority: "123"
+        direction: Inbound
+      - name: ssh_rule
+        type: azure.SecurityRuleSpec
+        protocol: Tcp
+        sourcePortRange: '*'
+        destinationPortRange: "22"
+        sourceAddressPrefix: '*'
+        destinationAddressPrefix: '*'
+        access: Allow
+        priority: "124"
+        direction: Inbound
+    templates:
+    - name: azure-host-template
+      type: template.overthere.SshHost
+      instanceName: azure-vm-{{%instanceId%}}-host
+      tags:
+      - app_server
+      os: UNIX
+      connectionType: SUDO
+      address: '{{%publicIp%}}'
+      username: AzureUser
+      privateKeyFile: ../.ssh/xl-azure-workshop2
+      sudoUsername: root
