@@ -62,6 +62,13 @@ spec:
         direction: Inbound
     - name: ansible-host
       type: azure.VirtualMachineSpec
+      boundTemplates:
+      - Applications/ansible-controller/1.0.0/ansible-host-template
+      provisioners:
+      - name: ansible-setup
+        type: script.provisioner.Script
+        hostTemplate: Applications/ansible-controller/1.0.0/ansible-host-template
+        file: !file "artifacts/Applications/ansible-controller/1.0.0/ansible-instance/ansible-setup/provision_ansible.sh"
       virtualMachineTags:
         demo: digital.ai
         env: '{{env}}'
@@ -101,7 +108,7 @@ spec:
       - ansible_roles_not_applied
       os: UNIX
       connectionType: SUDO
-      address: '{{%publicIpName%}}'
-      username: ubuntu
-      privateKeyFile: ssh-keypairs/myansible-keypair.pem
+      address: '{{%publicIp%}}'
+      username: AzureUser      
+      privateKeyFile: ../.ssh/xl-azure-workshop2
       sudoUsername: root
