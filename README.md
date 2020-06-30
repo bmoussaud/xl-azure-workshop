@@ -182,7 +182,6 @@ Tips: use the `xldeploy:undeploy` task.
 
 ![image](images/schema-8.png)
 
-
 ### Save your work as code
 
 ```bash

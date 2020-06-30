@@ -9,4 +9,4 @@ spec:
     url: http://localhost:4516
     authenticationMethod: Basic
     username: admin
-    password: !value "xldeploy_XLDeployServer_local_xldeploy_password"
+    password: admin

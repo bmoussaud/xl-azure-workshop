@@ -5,22 +5,24 @@ spec:
 - directory: MyApp
   children:
   - template: Provision and Deploy
-    scheduledStartDate: 2020-06-16T09:00:00Z
+    scheduledStartDate: 2020-06-16T11:00:00+02:00
+    dueDate: 2020-06-30T09:37:55.402+02:00
     phases:
     - phase: Phase 1
       tasks:
-      - name: Spin  up  a new Host.
+      - name: Spin  up  a new Host
         type: xldeploy.Deploy
         server: local xldeploy
         deploymentApplication: Applications/azure-vm
         deploymentVersion: 1.0.0
         deploymentPackage: Applications/azure-vm/1.0.0
         deploymentEnvironment: Environments/tst
+        description: Create a new VM with all the associated resources in Azure
         owner: admin
       - name: check in the Azure console the new VM is up & ready
         type: xlrelease.Task
-        description: Go to the Azure console, provide your credential and click on the
-          EC2 Service
+        description: Go to the Azure console, provide your credentials and click on
+          the Virtual Machine Service
         owner: admin
       color: '#0079BC'
     - phase: Phase 2
