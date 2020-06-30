@@ -8,7 +8,7 @@ The workshop will setup the following stack using Microsoft Azure Cloud Services
 
 ## Setup
 
-XLDeploy trial edition is available here: [here](https://info.digital.ai/xl-deploy-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine). 
+XLDeploy trial edition is available here: [here](https://info.digital.ai/xl-deploy-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine).
 
 XLDeploy Documentation is available [here](https://docs.xebialabs.com/v.9.6/deploy/installation#get-started)
 
@@ -75,7 +75,7 @@ xlw apply -f xebialabs/azure_vm.yaml
 * Once deployed, in the Infrastructure, a new Configuration representing the new VM instance has been created and added to the environment. it follows the following pattern 'Infrastructure/{{%instanceId%}}-host'.
 * trigger the `check Connection` control task to validate it.
 
-Note: the `Applications/azure-vm/1.0.1` performs the same deployment but using a ARM template instead. The new created host will be put into a dedicated environment.
+Note: the `Applications/azure-vm/1.0.1` performs the same deployment but using a *ARM template* instead. 
 
 ```bash
 xlw apply -f xebialabs/application_tomcat.yaml

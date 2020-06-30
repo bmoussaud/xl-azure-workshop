@@ -4,8 +4,37 @@ kind: Applications
 spec:
 - name: Applications/azure-vm
   type: udm.Application
-  lastVersion: 1.0.0
+  lastVersion: 1.0.1
   children:
+  - name: 1.0.1
+    type: udm.ProvisioningPackage
+    deployables:
+    - name: azure-vm-template
+      type: azure.arm.Template
+      boundTemplates:
+      - Applications/azure-vm/1.0.1/azure-host-template
+      inputVariables:
+        vmName: azure-vm
+        adminUsername: AzureUser
+        adminPassword: connectedWithAzure3579
+        dnsLabelPrefix: azure-vm
+      resourceGroupName: xl-azure-workshop-{{env}}
+      location: '{{location}}'
+      deploymentName: azure-vm-deployment-{{env}}
+      deploymentMode: Incremental
+      file: !file "artifacts/Applications/azure-vm/1.0.1/azure-vm-template/template.json"
+    templates:
+    - name: azure-host-template
+      type: template.overthere.SshHost
+      instanceName: '{{%outputVariables.publicIPAddress%}}-vm'
+      tags:
+      - app_server
+      os: UNIX
+      connectionType: SUDO
+      address: '{{%outputVariables.publicIPAddress%}}'
+      username: AzureUser
+      privateKeyFile: ../.ssh/xl-azure-workshop2
+      sudoUsername: root
   - name: 1.0.0
     type: udm.ProvisioningPackage
     deployables:
@@ -22,27 +51,6 @@ spec:
         virtualNetworkName: azure-vm-VNET
         subnet: ansible-subnet
         publicIpAddress: azure-vm-publicIP
-    - name: azure-vm-VNET
-      type: azure.VirtualNetworkSpec
-      location: '{{location}}'
-      virtualNetworkTags:
-        demo: digital.ai
-        env: '{{env}}'
-      addressPrefixes:
-      - 10.0.0.0/16
-      subnets:
-      - name: ansible-subnet
-        type: azure.SubnetSpec
-        subnetTags:
-          demo: digital.ai
-          env: '{{env}}'
-        addressPrefix: 10.0.0.0/24
-        networkSecurityGroupName: azure-vm-NSG
-    - name: azure-vm-publicIP
-      type: azure.PublicIpAddressSpec
-      location: '{{location}}'
-      publicIpAddressTags:
-        env: '{{env}}'
     - name: azure-host
       type: azure.VirtualMachineSpec
       boundTemplates:
@@ -66,11 +74,10 @@ spec:
           AzureUser@ansible-host
       networkInterfaces:
       - azure-vm-NIC
-    - name: azurevmsa
-      type: azure.StorageAccountSpec
+    - name: azure-vm-publicIP
+      type: azure.PublicIpAddressSpec
       location: '{{location}}'
-      storageAccountTags:
-        demo: digital.ai
+      publicIpAddressTags:
         env: '{{env}}'
     - name: azure-vm-NSG
       type: azure.NetworkSecurityGroupSpec
@@ -99,6 +106,28 @@ spec:
         access: Allow
         priority: "124"
         direction: Inbound
+    - name: azurevmsa
+      type: azure.StorageAccountSpec
+      location: '{{location}}'
+      storageAccountTags:
+        demo: digital.ai
+        env: '{{env}}'
+    - name: azure-vm-VNET
+      type: azure.VirtualNetworkSpec
+      location: '{{location}}'
+      virtualNetworkTags:
+        demo: digital.ai
+        env: '{{env}}'
+      addressPrefixes:
+      - 10.0.0.0/16
+      subnets:
+      - name: ansible-subnet
+        type: azure.SubnetSpec
+        subnetTags:
+          demo: digital.ai
+          env: '{{env}}'
+        addressPrefix: 10.0.0.0/24
+        networkSecurityGroupName: azure-vm-NSG
     templates:
     - name: azure-host-template
       type: template.overthere.SshHost
