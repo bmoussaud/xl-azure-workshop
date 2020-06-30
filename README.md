@@ -8,7 +8,9 @@ The workshop will setup the following stack using Microsoft Azure Cloud Services
 
 ## Setup
 
-XLDeploy trial edition is available here: [https://info.digital.ai/xl-deploy-trial-free.html](https://info.digital.ai/xl-deploy-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine). Documentation is available [here](https://docs.xebialabs.com/v.9.6/deploy/installation#get-started)
+XLDeploy trial edition is available here: [here](https://info.digital.ai/xl-deploy-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine). 
+
+XLDeploy Documentation is available [here](https://docs.xebialabs.com/v.9.6/deploy/installation#get-started)
 
 On the machine running the XL Deploy Server:
 
@@ -117,7 +119,9 @@ Note the `Applications/java-server-application/0.1.2` apply exactly the same rol
 
 ### Orchestration - phase 1
 
-XLRelease trial edition is available here: [https://info.digital.ai/xl-release-trial-free.html](https://info.digital.ai/xl-release-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine). Documentation is available [here](https://docs.xebialabs.com/v.9.6/release/installation#get-started)
+XLRelease trial edition is available [here](https://info.digital.ai/xl-release-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine).
+
+Documentation is available [here](https://docs.xebialabs.com/v.9.6/release/installation#get-started)
 
 in XLRelease, we'll design a template to orchestrate the tasks to provision and to deploy a full stack.
 
