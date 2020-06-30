@@ -1,8 +1,14 @@
 # Azure Workshop
 
+## Steps
+
+The workshop will setup the following stack using Microsoft Azure Cloud Services, Ansible, [XL Deploy](https://digital.ai/xl-deploy) and [XL Release](https://digital.ai/xl-release).
+
+![image](images/schema-1.png)
+
 ## Setup
 
-on the machine running the XLDeploy Server.
+on the machine running the XL Deploy Server. XLDeploy trial edition is available here: [https://info.digital.ai/xl-deploy-trial-free.html](https://info.digital.ai/xl-deploy-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine). Documentation is available [here](https://docs.xebialabs.com/v.9.6/deploy/installation#get-started)
 
 * install [xld-ansible-step-plugin](https://github.com/xebialabs-community/xld-ansible-step-plugin/releases/download/v1.1.0/xld-ansible-step-plugin-1.1.0.xldp) plugin. Copy the file into $XL_DEPLOY_HOME/plugins directory.
 * install [overtherepy](https://github.com/xebialabs-community/overthere-pylib/releases/download/v0.0.4/overtherepy-0.0.4.jar) plugin. Copy the file into $XL_DEPLOY_HOME/plugins directory.
@@ -10,11 +16,7 @@ on the machine running the XLDeploy Server.
 * install [XL-CLI](https://dist.xebialabs.com/public/xl-cli/9.6.2/) depending of the running platform (Linux,Windows or MacOS). Copy the file into $XL_DEPLOY_HOME/xl-cli directory.[Devops As Code Documentation](https://docs.xebialabs.com/v.9.6/xl-release/concept/get-started-with-devops-as-code#get-started)
 * Fork or Download this repository. https://github.com/bmoussaud/xl-azure-workshop
 
-## Steps
 
-The workshop will setup the following stack:
-
-![image](images/schema-1.png)
 
 ### Provision a new resource group
 
@@ -49,7 +51,7 @@ xlw apply -f xebialabs/aws_ansible_controller.yaml
 
 * edit CI Applications/ansible-controller/1.0.0/ansible-host-template/ansible-controler-template, to modify devops properties to match your current environment (devopsAsCodeUrl & xlPath)
 
-* deploy `Applications/ansible-controller/1.0.0` package in an environment containing an aws.Cloud Configuration item with your AWS credentials (`Environments/test/aws test`)
+* deploy `Applications/ansible-controller/1.0.0` package in an environment containing an aws.Cloud Configuration item with your AWS credentials (`Environments/test/azure test`)
 
 * Once deployed, in the Infrastructure,a new configuration item representing the resource has been created and added to the environment. It follows the following pattern 'Infrastructure/ansible-controlleur-{{%instanceId%}}-host'.
 
@@ -99,15 +101,19 @@ Note the `Applications/java-server-application/0.1.2` apply exactly the same rol
 ### Undeploy
 
 * Undeploy the `PetClinic-war` app
-  * Environments/test/aws test/PetClinic-war
+  * Environments/test/azure test/PetClinic-war
 * Undeploy the `java-server-application` app
-  * Environments/test/aws test/java-server-application
-* Undeploy the `aws-host` app
-  * Environments/test/aws test/aws-host
+  * Environments/test/azure test/java-server-application
+* Undeploy the `azure-vm` app
+  * Environments/test/azure-vm/azure-vm
 * Undepoy the `ansible-controller` app (you'll need it during the orchestration section)
-  * Environments/test/aws test/ansible-controller
+  * Environments/test/azure test/ansible-controller
+* Undepoy the `ResourceGroupProvisioner` app (you'll need it during the orchestration section)
+  * Environments/test/azure test/ResourceGroupProvisioner
 
 ### Orchestration - phase 1
+
+XLRelease trial edition is available here: [https://info.digital.ai/xl-release-trial-free.html](https://info.digital.ai/xl-release-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine). Documentation is available [here](https://docs.xebialabs.com/v.9.6/release/installation#get-started)
 
 in XLRelease, we'll design a template to orchestrate the tasks to provision and to deploy a full stack.
 
