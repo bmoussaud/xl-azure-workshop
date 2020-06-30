@@ -16,8 +16,6 @@ on the machine running the XL Deploy Server. XLDeploy trial edition is available
 * install [XL-CLI](https://dist.xebialabs.com/public/xl-cli/9.6.2/) depending of the running platform (Linux,Windows or MacOS). Copy the file into $XL_DEPLOY_HOME/xl-cli directory.[Devops As Code Documentation](https://docs.xebialabs.com/v.9.6/xl-release/concept/get-started-with-devops-as-code#get-started)
 * Fork or Download this repository. https://github.com/bmoussaud/xl-azure-workshop
 
-
-
 ### Provision a new resource group
 
 * apply the Devops-as-code defintions containing the environment and infrastructure definition
@@ -46,12 +44,12 @@ xlw apply -f xebialabs/resource_group_provisioner.yaml
 * apply the Devops-as-code defintions containing the deployment package for ansible controller
 
 ```bash
-xlw apply -f xebialabs/aws_ansible_controller.yaml
+xlw apply -f xebialabs/azure_ansible_controller.yaml
 ```
 
 * edit CI Applications/ansible-controller/1.0.0/ansible-host-template/ansible-controler-template, to modify devops properties to match your current environment (devopsAsCodeUrl & xlPath)
 
-* deploy `Applications/ansible-controller/1.0.0` package in an environment containing an aws.Cloud Configuration item with your AWS credentials (`Environments/test/azure test`)
+* deploy `Applications/ansible-controller/1.0.0` package in an environment containing an azure.Cloud Configuration item with your Azure credentials (`Environments/test/azure test`)
 
 * Once deployed, in the Infrastructure,a new configuration item representing the resource has been created and added to the environment. It follows the following pattern 'Infrastructure/ansible-controlleur-{{%instanceId%}}-host'.
 
@@ -59,7 +57,7 @@ xlw apply -f xebialabs/aws_ansible_controller.yaml
 
 ### Provision a new target host in Azure
 
-* apply the Devops-as-code defintions containing the deployment package containing the aws-host package.
+* apply the Devops-as-code defintions containing the deployment package containing the azure-vm package.
 
 ```bash
 xlw apply -f xebialabs/azure_vm.yaml
@@ -87,9 +85,9 @@ Note the `Applications/java-server-application/0.1.2` apply exactly the same rol
 * Right-click on the `Applications` node, and select `import from XLDeploy Server`
 * Select `PetClinic-war/2.0` package and click on the `Import` button
 * Deploy `Applications/PetClinic-war/1.0` package in the same environment.
-* Open a web browser to the `http://%IP_OF_AWS_HOST%/petclinic` address.
+* Open a web browser to the `http://%IP_OF_AZURE_VM%/petclinic` address.
 * Deploy `Applications/PetClinic-war/2.0` package in the same environment.
-* Open a web browser to the `http://%IP_OF_AWS_HOST%/petclinic` address. Check the difference.
+* Open a web browser to the `http://%IP_OF_AZURE_VM%/petclinic` address. Check the difference.
 
 ### Dump the state
 
@@ -105,7 +103,7 @@ Note the `Applications/java-server-application/0.1.2` apply exactly the same rol
 * Undeploy the `java-server-application` app
   * Environments/test/azure test/java-server-application
 * Undeploy the `azure-vm` app
-  * Environments/test/azure-vm/azure-vm
+  * Environments/test/azure test/azure-vm
 * Undepoy the `ansible-controller` app (you'll need it during the orchestration section)
   * Environments/test/azure test/ansible-controller
 * Undepoy the `ResourceGroupProvisioner` app (you'll need it during the orchestration section)
@@ -129,7 +127,7 @@ in XLRelease, we'll design a template to orchestrate the tasks to provision and 
 * Add a Template, provide a name `Provision & Deploy`, Click on the create button
 * Click on `New Phase` to rename it `Phase 1`
 * Add Task, Select XLDeploy:Deploy, and provide a title, for example `Provision & Deploy`
-  * Application: `Applications/aws-host`
+  * Application: `Applications/azure-vm`
   * Version: `1.0.0`
   * Environment: Fill with an environment you used previously
   * Click on `Assign to me` link
@@ -191,11 +189,11 @@ Tips: use the `xldeploy:undeploy` task.
 ### Save your work as code
 
 ```bash
-C:\xl-aws-workshop>xlw  --config config.yaml generate xl-release -t -o -p MyApp -f xebialabs/xlr_template_provision.yaml -n "Provision and Deploy"
+C:\xl-azure-workshop>xlw  --config config.yaml generate xl-release -t -o -p MyApp -f xebialabs/xlr_template_provision.yaml -n "Provision and Deploy"
 Generating definitions for path MyApp from XL Release to xebialabs/xlr_template_provision.yaml
 ```
 
 ```bash
-C:\xl-aws-workshop>xlw  --config config.yaml generate xl-release -t -o -p MyApp -f xebialabs/xlr_template_unprovision.yaml -n "Unprovision the stack"
+C:\xl-azure-workshop>xlw  --config config.yaml generate xl-release -t -o -p MyApp -f xebialabs/xlr_template_unprovision.yaml -n "Unprovision the stack"
 Generating definitions for path MyApp from XL Release to xebialabs/xlr_template_unprovision.yaml
 ```
