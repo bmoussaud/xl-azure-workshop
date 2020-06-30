@@ -8,13 +8,15 @@ The workshop will setup the following stack using Microsoft Azure Cloud Services
 
 ## Setup
 
-on the machine running the XL Deploy Server. XLDeploy trial edition is available here: [https://info.digital.ai/xl-deploy-trial-free.html](https://info.digital.ai/xl-deploy-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine). Documentation is available [here](https://docs.xebialabs.com/v.9.6/deploy/installation#get-started)
+XLDeploy trial edition is available here: [https://info.digital.ai/xl-deploy-trial-free.html](https://info.digital.ai/xl-deploy-trial-free.html). Register, Download the zip file, unzip and lauch bin/run.sh  (or run.bat is your ruuning it from a Windows Machine). Documentation is available [here](https://docs.xebialabs.com/v.9.6/deploy/installation#get-started)
 
+On the machine running the XL Deploy Server:
+
+* Fork or Download this repository. [https://github.com/bmoussaud/xl-azure-workshop](https://github.com/bmoussaud/xl-azure-workshop)
 * install [xld-ansible-step-plugin](https://github.com/xebialabs-community/xld-ansible-step-plugin/releases/download/v1.1.0/xld-ansible-step-plugin-1.1.0.xldp) plugin. Copy the file into $XL_DEPLOY_HOME/plugins directory.
 * install [overtherepy](https://github.com/xebialabs-community/overthere-pylib/releases/download/v0.0.4/overtherepy-0.0.4.jar) plugin. Copy the file into $XL_DEPLOY_HOME/plugins directory.
 * restart XL Deploy Server
 * install [XL-CLI](https://dist.xebialabs.com/public/xl-cli/9.6.2/) depending of the running platform (Linux,Windows or MacOS). Copy the file into $XL_DEPLOY_HOME/xl-cli directory.[Devops As Code Documentation](https://docs.xebialabs.com/v.9.6/xl-release/concept/get-started-with-devops-as-code#get-started)
-* Fork or Download this repository. https://github.com/bmoussaud/xl-azure-workshop
 
 ### Provision a new resource group
 
@@ -47,6 +49,8 @@ xlw apply -f xebialabs/resource_group_provisioner.yaml
 xlw apply -f xebialabs/azure_ansible_controller.yaml
 ```
 
+* edit CI Applications/ansible-controller/1.0.0/ansible-host-template, to modify the 'privateKey' property to match your current environment to point to SSH Key [.ssh/xl-azure-workshop2](.ssh/xl-azure-workshop2)
+
 * edit CI Applications/ansible-controller/1.0.0/ansible-host-template/ansible-controler-template, to modify devops properties to match your current environment (devopsAsCodeUrl & xlPath)
 
 * deploy `Applications/ansible-controller/1.0.0` package in an environment containing an azure.Cloud Configuration item with your Azure credentials (`Environments/test/azure test`)
@@ -56,6 +60,8 @@ xlw apply -f xebialabs/azure_ansible_controller.yaml
 * trigger the `check Connection` control task.
 
 ### Provision a new target host in Azure
+
+* edit the `xebialabs/azure_vm.yaml` and edit the line : `privateKeyFile: ../.ssh/xl-azure-workshop2` to match with your environment (you already did it using the UI for Ansible Controller.)
 
 * apply the Devops-as-code defintions containing the deployment package containing the azure-vm package.
 
